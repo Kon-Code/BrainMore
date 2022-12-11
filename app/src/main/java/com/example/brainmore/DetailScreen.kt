@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,18 +20,23 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.brainmore.FirstgameScreen
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.brainmore.ScoreSerivces
+import com.example.brainmore.Services
 import com.example.brainmore.ui.theme.Screen
-import com.example.destinations.DetailScreenDestination
 import com.example.destinations.FirstgameScreenDestination
 import com.example.destinations.MainScreenDestination
+import com.example.destinations.MathgameScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination
 @Composable
 fun DetailScreen(
-    navigator: DestinationsNavigator) {
+    navigator: NavController, scoreSerivces: ScoreSerivces ) {
+    val services=Services(LocalContext.current)
+    val scoreSerivces = services.scoreServices
+
     Box(
 
         modifier = Modifier
@@ -100,7 +103,7 @@ fun DetailScreen(
 
                     .width(339.dp)
                     .height(94.dp)
-                    .clickable { navigator.navigate(FirstgameScreenDestination()) }
+                    .clickable {  }
                     .clip(
                         RoundedCornerShape(
                             topStart = 100.dp,
@@ -175,7 +178,11 @@ fun DetailScreen(
                     .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
 
                     .alpha(0.800000011920929f)
+                    .clickable {
 
+                        navigator.navigate(Screen.MathgameScreen.route)
+
+                    }
 
             ) {
                 Text(
@@ -310,9 +317,7 @@ fun DetailScreen(
                     .width(321.dp)
                     .height(47.dp)
                     .clickable {
-                        navigator.navigate(
-                            MainScreenDestination()
-                        )
+
                     }
                     .clip(
                         RoundedCornerShape(

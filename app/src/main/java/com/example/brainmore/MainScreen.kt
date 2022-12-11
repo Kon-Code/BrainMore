@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,21 +18,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.ActivityNavigator
-import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 import com.example.brainmore.ui.theme.Screen
 import com.example.destinations.DetailScreenDestination
-import com.example.dodatek.DetailScreen
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.system.exitProcess
 
 @Destination(start =true )
 @Composable
 fun MainScreen(
-    navigator:DestinationsNavigator
+    navigator: NavHostController, scoreServices: ScoreSerivces
 ) {
     Column(
         modifier = Modifier
@@ -62,9 +55,8 @@ fun MainScreen(
                 .width(344.dp)
                 .height(60.dp)
                 .clickable {
-                    navigator.navigate(
-                        DetailScreenDestination()
-                    )
+                    navigator.navigate(Screen.DetailScreen.route)
+
                 }
                 .clip(
                     RoundedCornerShape(

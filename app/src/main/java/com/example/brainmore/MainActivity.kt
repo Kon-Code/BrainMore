@@ -14,11 +14,15 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.NavGraphs
 import com.example.brainmore.ui.theme.BrainMoreTheme
+import com.example.dodatek.DetailScreen
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +30,6 @@ class MainActivity : ComponentActivity() {
             BrainMoreTheme {
                     Figmath()
                 }
-
 
                 }
             }
@@ -38,6 +41,7 @@ fun Figmath() {
     val image = painterResource(id = R.drawable.tlo5)
     //val windowInfo = remeberWindow()
     // if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
+    val services=Services(LocalContext.current)
 
     Box(
 
@@ -79,7 +83,8 @@ fun Figmath() {
                 .matchParentSize(), contentScale = ContentScale.FillWidth
         )
 
-        DestinationsNavHost(navGraph= NavGraphs.root)
+        Navigation(services)
+
     }
 }
 

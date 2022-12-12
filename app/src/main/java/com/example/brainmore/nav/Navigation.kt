@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.brainmore.Games.simonsays.FirstgameScreen
 import com.example.brainmore.ui.theme.Screen
 import com.example.dodatek.DetailScreen
 
@@ -15,7 +16,7 @@ fun Navigation(services: Services) {
     NavHost(navController = navController ,startDestination= startDestination ){
 
         composable(route = Screen.MainScreen.route){
-            MainScreen(navController, services.scoreServices )
+            MainScreen(navController )
 
         }
         composable(route= Screen.MathgameScreen.route){
@@ -26,7 +27,14 @@ fun Navigation(services: Services) {
             ScoardBoardScreen(navController, services.scoreServices)
         }
         composable(route=Screen.DetailScreen.route){
-            DetailScreen(navController, services.scoreServices )
+            DetailScreen(navController)
+        }
+
+        composable(route=Screen.FirstgameScreen.route){
+           FirstgameScreen(services.sequenceGenerator)
+        }
+        composable(route=Screen.Fasthandgamescreen.route){
+            Fasthandgamescreen()
         }
 
     }

@@ -1,62 +1,45 @@
-package com.example.brainmore
+package com.example.brainmore.sequenceService
 
-import kotlin.random.Random
+import android.content.Context
+import androidx.compose.ui.graphics.Color
 
+class SequenceGenerator(private  val context: Context, private val sequence:ColorSequence) {
 
-typealias Sequence = ArrayList<Int>
-
-class SequenceGenerator {
-
-    private val buttonCount: Int
-    private var sequenceStartCount: Int
-    private var sequence : Sequence
-    private val random: Random
-    private val sequenceIncrementer = 1
+    private val sequencelenght = sequence.sequencelenght
 
 
-    constructor(firstgameBoard:FirstgameBoard , sequenceStartCount: Int = 0) {
 
-        buttonCount = firstgameBoard.buttons.count()
-        this.sequenceStartCount = sequenceStartCount
+    fun getsequenceLenght(): Int{
+        return sequencelenght
+    }
 
-        random = Random
-        sequence = Sequence()
+    fun getcolor(sequencelenght: Int,getcolors:ArrayList<Color>) {
 
-        createSequence(sequenceStartCount)
+        val fourcolors : List<Color> =listOf(Color.Red,Color.Blue, Color.Yellow, Color.Green)
+        val randomColor= fourcolors.random()
+        for (i in 0..sequencelenght) {
+            getcolors.add(randomColor)
+        }
+    }
+
+    fun sequenceincrement(sequenceadder: Int): Int {
+        return sequencelenght+sequenceadder
+    }
+
+    fun resetSequence() {
+        sequence.sequencelenght=0
 
     }
-        fun getCurrentSequence(): Sequence {
 
-            return sequence
-        }
 
-        fun getNewSequence(): Sequence {
 
-            addToSequence()
 
-            return sequence
-        }
-
-        fun resetSequence() {
-
-            sequence.clear()
-            createSequence(1)
-        }
-
-        private fun createSequence(sequenceCount: Int) {
-
-            for (i in 1..sequenceCount) {
-
-                addToSequence()
-            }
-        }
-
-    private fun addToSequence() {
-
-        val nextInt = random.nextInt(buttonCount)
-        sequence.add(nextInt)
-        sequenceStartCount += sequenceIncrementer
-    }
 }
+
+
+
+
+
+
 
 

@@ -11,6 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,27 +31,36 @@ import kotlin.system.exitProcess
 @Destination(start =true )
 @Composable
 fun MainScreen(
-    navigator: NavHostController, scoreServices: ScoreSerivces
+    navigator: NavHostController
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .clip(
-                RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 0.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 0.dp
-                )
-            ),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(" ")
-        Text(" ")
-        Text(" ")
-        Text(" ")
-        Text(" ")
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "BrainMore",
+            textAlign = TextAlign.Center,
+            fontSize = 52.sp,
+            textDecoration = TextDecoration.None,
+            letterSpacing = 0.10000000149011612.sp,
+            lineHeight = 20.sp,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+
+                .width(361.dp)
+
+                //.height(151.dp)
+
+                .alpha(1f),
+            color = Color(red = 0.987500011920929f, green = 0.987500011920929f, blue = 0.987500011920929f, alpha = 0.30000001192092896f),
+            fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Normal,
+        )
+        Spacer(modifier = Modifier.height(100.dp))
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -84,120 +97,15 @@ fun MainScreen(
                 text = "Trening ",
                 textAlign = TextAlign.Center,
                 fontSize = 30.sp,
-                textDecoration = TextDecoration.None,
-                letterSpacing = 0.10000000149011612.sp,
-                lineHeight = 20.sp,
-                overflow = TextOverflow.Visible,
                 modifier = Modifier
                     .width(200.dp)
                     .height(40.dp)
                     .alpha(1f),
                 color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal,
-            )
+                )
+
         }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-            modifier = Modifier
-                .width(344.dp)
-                .height(60.dp)
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 100.dp,
-                        topEnd = 100.dp,
-                        bottomStart = 100.dp,
-                        bottomEnd = 100.dp
-                    )
-                )
-                .background(
-                    Color(
-                        red = 0.3333333432674408f,
-                        green = 0.25882354378700256f,
-                        blue = 0.9019607901573181f,
-                        alpha = 1f
-                    )
-                )
-                .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
-                .alpha(0.800000011920929f),
-
-
-            ) {
-
-            Text(
-                text = "opcje ",
-                textAlign = TextAlign.Center,
-                fontSize = 30.sp,
-                textDecoration = TextDecoration.None,
-                letterSpacing = 0.10000000149011612.sp,
-                lineHeight = 20.sp,
-                overflow = TextOverflow.Visible,
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(40.dp)
-                    .alpha(1f),
-                color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal,
-            )
-        }
-    Column(
-        //kolumna dla wyjścia
-
-        modifier = Modifier
-            .width(344.dp)
-            .height(60.dp)
-            .clickable {
-                    exitProcess(-1)
-            }
-            .clip(
-                RoundedCornerShape(
-                    topStart = 100.dp,
-                    topEnd = 100.dp,
-                    bottomStart = 100.dp,
-                    bottomEnd = 100.dp
-                )
-            )
-            .background(
-                Color(
-                    red = 0.3333333432674408f,
-                    green = 0.25882354378700256f,
-                    blue = 0.9019607901573181f,
-                    alpha = 1f
-                )
-            )
-
-            .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
-
-            .alpha(0.800000011920929f),
-
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-
-        )
-    {
-
-        Text(
-            text = "Wyjdź ",
-            textAlign = TextAlign.Center,
-            fontSize = 30.sp,
-            textDecoration = TextDecoration.None,
-            letterSpacing = 0.10000000149011612.sp,
-            lineHeight = 20.sp,
-            overflow = TextOverflow.Visible,
-            modifier = Modifier
-                .width(200.dp)
-                .height(40.dp)
-                .alpha(1f),
-            color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal,
-
-            )
-    }
-    Text(" ")
+        Spacer(modifier = Modifier.height(60.dp))
    }
 
 }

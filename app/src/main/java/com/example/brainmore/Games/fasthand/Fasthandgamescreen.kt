@@ -81,7 +81,7 @@ fun Fasthandgamescreen(
                     color=Color.White)
             else
                 Text(text = "świetnie spróbuj jeszcze raz!",
-                    fontSize = 30.sp,
+                    fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     color=Color.White)
             }

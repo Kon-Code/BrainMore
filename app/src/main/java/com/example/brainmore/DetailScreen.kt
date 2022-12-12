@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import com.example.brainmore.ScoreSerivces
 import com.example.brainmore.Services
 import com.example.brainmore.ui.theme.Screen
+import com.example.destinations.FasthandgamescreenDestination
 import com.example.destinations.FirstgameScreenDestination
 import com.example.destinations.MainScreenDestination
 import com.example.destinations.MathgameScreenDestination
@@ -33,22 +34,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Destination
 @Composable
 fun DetailScreen(
-    navigator: NavController, scoreSerivces: ScoreSerivces ) {
-    val services=Services(LocalContext.current)
-    val scoreSerivces = services.scoreServices
+    navigator: NavController ) {
+
 
     Box(
 
         modifier = Modifier
             .fillMaxSize()
-            .clip(
-                RoundedCornerShape(
-                    topStart = 30.dp,
-                    topEnd = 30.dp,
-                    bottomStart = 30.dp,
-                    bottomEnd = 30.dp
-                )
-            )
             .background(
                 Color(
                     red = 0.6549019813537598f,
@@ -103,7 +95,7 @@ fun DetailScreen(
 
                     .width(339.dp)
                     .height(94.dp)
-                    .clickable {  }
+                    .clickable { navigator.navigate(Screen.FirstgameScreen.route) }
                     .clip(
                         RoundedCornerShape(
                             topStart = 100.dp,
@@ -130,7 +122,7 @@ fun DetailScreen(
 
 
                 Text(
-                    text = "Pamieć ",
+                    text = "Pamieć i Uwaga ",
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     textDecoration = TextDecoration.None,
@@ -138,9 +130,8 @@ fun DetailScreen(
                     lineHeight = 20.sp,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-
-                        .width(110.dp)
-                        .height(40.dp)
+                        .width(300.dp)
+                        .height(49.dp)
                         .alpha(1f),
                     color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
                     fontWeight = FontWeight.Bold,
@@ -206,56 +197,6 @@ fun DetailScreen(
                 )
 
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-                modifier = Modifier
-                    .width(339.dp)
-                    .height(94.dp)
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 100.dp,
-                            topEnd = 100.dp,
-                            bottomStart = 100.dp,
-                            bottomEnd = 100.dp
-                        )
-                    )
-                    .background(
-                        Color(
-                            red = 0.47979167103767395f,
-                            green = 0.14291667938232422f,
-                            blue = 0.8166666626930237f,
-                            alpha = 1f
-                        )
-                    )
-
-                    .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
-
-                    .alpha(0.800000011920929f)
-
-
-            ) {
-                Text(
-                    text = "Uwaga",
-                    textAlign = TextAlign.Center,
-                    fontSize = 30.sp,
-                    textDecoration = TextDecoration.None,
-                    letterSpacing = 0.10000000149011612.sp,
-                    lineHeight = 20.sp,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-
-                        .width(97.dp)
-
-                        //.height(20.dp)
-
-                        .alpha(1f),
-                    color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
-                    fontWeight = FontWeight.Bold,
-                    fontStyle = FontStyle.Normal,
-                )
-
-            }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -264,6 +205,7 @@ fun DetailScreen(
 
                     .width(339.dp)
                     .height(94.dp)
+                    .clickable { navigator.navigate(Screen.Fasthandgamescreen.route) }
                     .clip(
                         RoundedCornerShape(
                             topStart = 100.dp,
@@ -301,59 +243,6 @@ fun DetailScreen(
 
                         .height(40.dp)
 
-                        .alpha(1f),
-                    color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
-                    fontWeight = FontWeight.Bold,
-                    fontStyle = FontStyle.Normal,
-                )
-
-            }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-                modifier = Modifier
-
-                    .width(321.dp)
-                    .height(47.dp)
-                    .clickable {
-
-                    }
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 100.dp,
-                            topEnd = 100.dp,
-                            bottomStart = 100.dp,
-                            bottomEnd = 100.dp
-                        )
-                    )
-                    .background(
-                        Color(
-                            red = 0.47979167103767395f,
-                            green = 0.14291667938232422f,
-                            blue = 0.8166666626930237f,
-                            alpha = 1f
-                        )
-                    )
-
-                    .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
-
-                    .alpha(0.800000011920929f)
-
-
-            ) {
-                Text(
-                    text = "powrót",
-                    textAlign = TextAlign.Center,
-                    fontSize = 30.sp,
-                    textDecoration = TextDecoration.None,
-                    letterSpacing = 0.10000000149011612.sp,
-                    lineHeight = 20.sp,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-
-                        .width(97.dp)
-                        .height(40.dp)
                         .alpha(1f),
                     color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
                     fontWeight = FontWeight.Bold,

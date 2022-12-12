@@ -1,10 +1,10 @@
 package com.example.brainmore
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -12,24 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.brainmore.ui.theme.Screen
-
 import com.example.brainmore.ui.theme.themecolor
-
-import com.example.destinations.ScoardBoardScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
 
 
-
-
+@SuppressLint("UnrememberedMutableState")
 @Destination
 @Composable
 fun MathgameScreen(navigator: NavController, scoreService:ScoreSerivces) {
@@ -40,7 +33,7 @@ fun MathgameScreen(navigator: NavController, scoreService:ScoreSerivces) {
     val symbol: ArrayList<String> = ArrayList()
     val answers: ArrayList<String> = ArrayList()
     val randomans: ArrayList<String> = ArrayList()
-    val score = scoreService.getscore()
+    var goodans: ArrayList<Boolean> = ArrayList()
 
     questionsgenerator(
         answers = answers,
@@ -49,6 +42,9 @@ fun MathgameScreen(navigator: NavController, scoreService:ScoreSerivces) {
         symbol = symbol
     )
 
+    var isstart by remember {
+        mutableStateOf(false)
+    }
     var isCorrect by remember {
         mutableStateOf(0)
     }
@@ -58,14 +54,18 @@ fun MathgameScreen(navigator: NavController, scoreService:ScoreSerivces) {
     var currentstate by remember {
         mutableStateOf(0)
     }
-    var isincorrect by remember {
+    var correct by remember {
         mutableStateOf(false)
     }
 
-    tworandomans(randomans,answers[nextquestion])
 
 
-   Surface(color = themecolor) {
+
+
+    tworandomans(randomans, answers[nextquestion])
+
+
+    Surface(color = themecolor) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -87,8 +87,11 @@ fun MathgameScreen(navigator: NavController, scoreService:ScoreSerivces) {
                     )
             )
 
-
             {
+                Text(
+                    text = isCorrect.toString(),
+                    fontSize = 40.sp,
+                )
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -101,208 +104,224 @@ fun MathgameScreen(navigator: NavController, scoreService:ScoreSerivces) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
+                       for(i in 0..5){
+                           CircleB(backcolor = Color.Gray)}
 
 
-                    }
-                    Spacer(modifier = Modifier.height(100.dp))
-                    Row(
-                        modifier = Modifier
-                            .height(110.dp)
-                            .width(280.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                        }
+                        Spacer(modifier = Modifier.height(100.dp))
+                        Row(
+                            modifier = Modifier
+                                .height(110.dp)
+                                .width(300.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
 
-                        when (currentstate) {
-                            0 -> Button(onClick = {currentstate++
+                            if (currentstate == 0) {
+                                Button(
+                                    onClick = {
+                                        currentstate++
+                                        isstart = !isstart
 
-                            },  modifier = Modifier
-                                .size(size = 300.dp),
-                                shape=  RoundedCornerShape(50.dp) ,
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green))
-                            {
-                                Text(text = "Rozpocznij",
-                                    fontSize = 40.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
+                                    }, modifier = Modifier
+                                        .size(size = 300.dp),
+                                    shape = RoundedCornerShape(50.dp),
+                                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
                                 )
-                            }
-                            6 -> {
-                                    scoreService.addtoscoe(isCorrect)
+                                {
+                                    Text(
+                                        text = "Rozpocznij",
+                                        fontSize = 40.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                }
+                            } else if (currentstate == 6) {
+                                scoreService.addtoscoe(isCorrect)
                                 navigator.navigate(Screen.ScoardBoardScreen.route)
-                            }
-                            else -> {
+                                currentstate = 0
+                                nextquestion = 0
+                                questionsgenerator(
+                                    answers = answers,
+                                    questiona = questiona,
+                                    questionb = questionb,
+                                    symbol = symbol
+                                )
+                            } else {
                                 Text(
                                     text = questiona[nextquestion],
-                                    fontSize = 96.sp,
+                                    fontSize = 90.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
 
                                     )
                                 Text(
                                     text = symbol[nextquestion],
-                                    fontSize = 96.sp,
+                                    fontSize = 90.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
                                 )
                                 Text(
                                     text = questionb[nextquestion],
-                                    fontSize = 96.sp,
+                                    fontSize = 90.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
                                 )
                             }
                         }
-                    }
-
-                        Spacer(modifier = Modifier.height(150.dp))
+                        Spacer(modifier = Modifier.height(200.dp))
                     }
                 }
-                    Box(
-                        modifier = Modifier
-                            .width(334.dp)
-                            .height(58.dp)
-                            .clip(
-                                RoundedCornerShape(
-                                    topStart = 10.dp,
-                                    topEnd = 10.dp,
-                                    bottomStart = 10.dp,
-                                    bottomEnd = 10.dp
-                                )
-                            )
-                            .background(
-                                Color(
-                                    red = 0.4965815246105194f,
-                                    green = 0.20338541269302368f,
-                                    blue = 0.6875f,
-                                    alpha = 1f
-                                )
-                            )
-                            .clickable {
-                                tworandomans(randomans, answers[nextquestion])
 
-                                if (answers[nextquestion]==randomans[0]) {
-                                    isCorrect+=1
-                                    nextquestion+=1
-                                    currentstate+=1
-                                }
-                                else{
-                                    isincorrect=!isincorrect
-                                    nextquestion+=1
-                                    currentstate+=1
-                                }
-                            },
-                        contentAlignment = Alignment.Center
+                Box(
+                    modifier = Modifier
+                        .width(334.dp)
+                        .height(58.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 10.dp,
+                                topEnd = 10.dp,
+                                bottomStart = 10.dp,
+                                bottomEnd = 10.dp
+                            )
+                        )
+                        .background(
+                            Color(
+                                red = 0.4965815246105194f,
+                                green = 0.20338541269302368f,
+                                blue = 0.6875f,
+                                alpha = 1f
+                            )
+                        )
+                        .clickable {
+                            randomans.clear()
+                            tworandomans(randomans, answers[nextquestion])
 
-                    ) {
-                        Text(
-                            text = randomans[0],
-                            fontSize = 37.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
+                            if (answers[nextquestion] == randomans[0]) {
+                                isCorrect += 1
+                                nextquestion += 1
+                                currentstate += 1
+                                correct = !correct
+                                goodans.add(correct)
+                            } else {
+                                nextquestion += 1
+                                currentstate += 1
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+
+                ) {
+                    Text(
+                        text = randomans[0],
+                        fontSize = 37.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
 
                         )
-                    }
+                }
 
-                    Box(
-                        modifier = Modifier
-                            .width(334.dp)
-                            .height(58.dp)
-                            .clip(
-                                RoundedCornerShape(
-                                    topStart = 10.dp,
-                                    topEnd = 10.dp,
-                                    bottomStart = 10.dp,
-                                    bottomEnd = 10.dp
-                                )
+                Box(
+                    modifier = Modifier
+                        .width(334.dp)
+                        .height(58.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 10.dp,
+                                topEnd = 10.dp,
+                                bottomStart = 10.dp,
+                                bottomEnd = 10.dp
                             )
-                            .background(
-                                Color(
-                                    red = 0.45070838928222656f,
-                                    green = 0.14791667461395264f,
-                                    blue = 0.5f,
-                                    alpha = 1f
-                                )
-                            )
-                            .clickable {
-                                tworandomans(randomans, answers[nextquestion])
-                                if (answers[nextquestion]==randomans[1]) {
-                                    isCorrect+=1
-                                    nextquestion+=1
-                                    currentstate+=1
-                                }
-                                else{
-                                    isincorrect=!isincorrect
-                                    nextquestion+=1
-                                    currentstate+=1
-                                }
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = randomans[1],
-                            fontSize = 37.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
                         )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .width(334.dp)
-                            .height(58.dp)
-                            .clip(
-                                RoundedCornerShape(
-                                    topStart = 10.dp,
-                                    topEnd = 10.dp,
-                                    bottomStart = 10.dp,
-                                    bottomEnd = 10.dp
-                                )
+                        .background(
+                            Color(
+                                red = 0.45070838928222656f,
+                                green = 0.14791667461395264f,
+                                blue = 0.5f,
+                                alpha = 1f
                             )
-                            .background(
-                                Color(
-                                    red = 0.22949275374412537f,
-                                    green = 0.04067707061767578f,
-                                    blue = 0.2958333194255829f,
-                                    alpha = 1f
-                                )
-                            )
-                            .clickable {
-                                tworandomans(randomans, answers[nextquestion])
-                                if (answers[nextquestion]==randomans[2]) {
-                                    isCorrect+=1
-                                    nextquestion+=1
-                                    currentstate+=1
-                                }
-                                else{
-                                    isincorrect=!isincorrect
-                                    nextquestion+=1
-                                    currentstate+=1
-                                }
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = randomans[2],
-                            fontSize = 37.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-
                         )
-                    }
+                        .clickable {
+                            randomans.clear()
+                            tworandomans(randomans, answers[nextquestion])
+                            if (answers[nextquestion] == randomans[1]) {
+                                isCorrect += 1
+                                nextquestion += 1
+                                currentstate += 1
+                                correct = !correct
+                                goodans.add(correct)
+                            } else {
+                                nextquestion += 1
+                                currentstate += 1
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = randomans[1],
+                        fontSize = 37.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                Box(
+                    modifier = Modifier
+                        .width(334.dp)
+                        .height(58.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 10.dp,
+                                topEnd = 10.dp,
+                                bottomStart = 10.dp,
+                                bottomEnd = 10.dp
+                            )
+                        )
+                        .background(
+                            Color(
+                                red = 0.22949275374412537f,
+                                green = 0.04067707061767578f,
+                                blue = 0.2958333194255829f,
+                                alpha = 1f
+                            )
+                        )
+                        .clickable {
+                            randomans.clear()
+                            tworandomans(randomans, answers[nextquestion])
+                            if (answers[nextquestion] == randomans[2]) {
+                                isCorrect += 1
+                                nextquestion += 1
+                                currentstate += 1
+                                correct = !correct
+                                goodans.add(correct)
+                            } else {
+                                nextquestion += 1
+                                currentstate += 1
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = randomans[2],
+                        fontSize = 37.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
             }
         }
-}
+    }
+
 
 
 
 
 @Composable
 fun CircleB(backcolor:Color) {
-
     Box(
         modifier = Modifier
             .size(40.dp)

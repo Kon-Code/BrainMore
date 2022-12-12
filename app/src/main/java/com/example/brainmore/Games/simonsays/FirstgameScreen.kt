@@ -1,41 +1,69 @@
-package com.example.brainmore
+package com.example.brainmore.Games.simonsays
 
 
-import android.widget.Button
-import androidx.compose.animation.Animatable
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.*
+
 import androidx.compose.foundation.background
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.Dimension.Companion.value
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.brainmore.ui.theme.*
+import com.example.brainmore.sequenceService.SequenceGenerator
 import com.ramcosta.composedestinations.annotation.Destination
+import kotlinx.coroutines.delay
+
 
 
 @Destination
 @Composable
-fun FirstgameScreen(
-   ) {
+fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
+
+
+
+    var enabled by remember {
+        mutableStateOf(false)
+    }
+
+    var isgamestart by remember {
+        mutableStateOf(0)
+    }
+    var isnext by remember {
+        mutableStateOf(false)
+    }
+    var isinCorrect by remember {
+        mutableStateOf(false)
+    }
+    var currentcolor by remember{
+        mutableStateOf(0)
+    }
+
+
+
+
+    var sequencelenght = sequenceGenerator.getsequenceLenght()
+    var sequence: ArrayList<Color> = ArrayList(sequencelenght)
+
+    LaunchedEffect(key1 = isnext, key2 = isinCorrect) {
+        while (isgamestart == 1) {
+            if (isnext) {
+                delay(1000L)
+                sequencelenght+= sequenceGenerator.sequenceincrement(1)
+                sequenceGenerator.getcolor(sequencelenght,sequence)
+
+            } else if (isinCorrect) {
+                isgamestart = 0
+                sequenceGenerator.resetSequence()
+            }
+        }
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -65,19 +93,57 @@ fun FirstgameScreen(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            startbutt()
+            Spacer(modifier = Modifier.height(100.dp))
+            if (isgamestart == 0) {
+                Button(
+                    onClick = {
+                        enabled = !enabled
+                        isgamestart++
+                        currentcolor++
 
+                        sequenceGenerator.getcolor(currentcolor,sequence)
+
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
+                ) {
+
+                    Text(
+                        text = "Rozpocznij",
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(160.dp)
+                        .background(sequence[currentcolor])
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 30.dp,
+                                topEnd = 30.dp,
+                                bottomStart = 30.dp,
+                                bottomEnd = 30.dp
+                            )
+                        )
+                )
+
+            }
+            Spacer(modifier = Modifier.height(400.dp))
         }
 
 
-        Column(modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom){
 
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
             Row(
                 modifier = Modifier
                     .height(323.dp)
@@ -91,8 +157,31 @@ fun FirstgameScreen(
                         .width(160.dp),
                 )
                 {
-                    butt(Colorofbutt = Color.Green)
-                    butt(Colorofbutt = Color.Yellow)
+                    Button(
+                        onClick = {
+                            if (sequence[currentcolor] == Color.Green) {
+                                isnext = !isnext
+                            } else {
+                                isinCorrect = !isinCorrect
+                            }
+                        }, modifier = Modifier
+                            .size(size = 160.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
+                    ) {}
+
+                    Button(
+                        onClick = {
+                            if (sequence[currentcolor] == Color.Yellow) {
+                                isnext = !isnext
+                            } else {
+                                isinCorrect = !isinCorrect
+                            }
+                        }, modifier = Modifier
+                            .size(size = 160.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow)
+                    ) {}
 
                 }
                 Column(
@@ -102,98 +191,40 @@ fun FirstgameScreen(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    butt(Colorofbutt = Color.Red)
-                    butt(Colorofbutt = Color.Blue)
+
+                    Button(
+                        onClick = {
+                            if (sequence[currentcolor] == Color.Red) {
+                                isnext = !isnext
+                            } else {
+                                isinCorrect = !isinCorrect
+                            }
+                        }, modifier = Modifier
+                            .size(size = 160.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+                    ) {}
+
+                    Button(
+                        onClick = {
+                            if (sequence[currentcolor] == Color.Red) {
+                                isnext = !isnext
+                            } else {
+                                isinCorrect = !isinCorrect
+                            }
+                        }, modifier = Modifier
+                            .size(size = 160.dp),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                    ) {}
 
                 }
             }
-           Spacer(modifier = Modifier.height(100.dp))
 
         }
     }
 }
 
-
-
-@Composable
-fun butt( Colorofbutt: Color) {
-
-    Button(onClick = { },  modifier = Modifier
-        .size(size = 160.dp),
-        shape=  RoundedCornerShape(30.dp) ,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Colorofbutt))
-         {
-    }
-
-}
-@Composable
-fun startbutt() {
-
-
-    var random = (0..3).random()
-    var fourcolors = arrayOf(lightYellow, lightblue, lightRed, lightgreen)
-    val addcolors = ArrayList<androidx.compose.ui.graphics.Color>()
-
-    var enabled by remember {
-        mutableStateOf(false)
-    }
-
-    Button(
-        onClick = {enabled=!enabled },
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
-    ) {
-        Text(
-            textAlign = TextAlign.Center,
-            lineHeight = 20.sp,
-            text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 32.sp
-                    )
-                ) { append("start") }
-                withStyle(
-                    style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 32.sp
-                    )
-                ) {
-                    append(" ")
-                }
-
-            }
-        )
-
-    }
-
-
-            Box(
-                modifier = Modifier
-                    .size(160.dp)
-                    .background(Color.Red)
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 30.dp,
-                            topEnd = 30.dp,
-                            bottomStart = 30.dp,
-                            bottomEnd = 30.dp
-                        )
-                    )
-            ) {
-
-            }
-}
-
-
-
-
-@Composable
-fun butto(typeofbutton:Button){
-                val redbutton = butt(Colorofbutt = Color.Red)
-                val greenbutton = butt(Colorofbutt = Color.Green)
-                val bluebutton = butt(Colorofbutt = Color.Blue)
-                val yellowbutton = butt(Colorofbutt = Color.Yellow)
-}
 
 
 

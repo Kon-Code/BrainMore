@@ -47,14 +47,7 @@ fun Figmath() {
 
         modifier = Modifier
             .fillMaxSize()
-            .clip(
-                RoundedCornerShape(
-                    topStart = 30.dp,
-                    topEnd = 30.dp,
-                    bottomStart = 30.dp,
-                    bottomEnd = 30.dp
-                )
-            )
+
             .background(
                 Color(
                     red = 0.6549019813537598f,

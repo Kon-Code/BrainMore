@@ -1,1 +1,0 @@
-package com.example.brainmore.ui.theme

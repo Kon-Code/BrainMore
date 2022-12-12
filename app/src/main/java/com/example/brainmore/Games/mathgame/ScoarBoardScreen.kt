@@ -28,7 +28,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun ScoardBoardScreen(navigator: NavController, scoreSerivces: ScoreSerivces) {
 
     val currentscore =scoreSerivces.getcurrentscore()
-
     androidx.compose.material.Surface(color = themecolor) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -2,7 +2,12 @@ package com.example.brainmore.Games.simonsays
 
 
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.repeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -17,14 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.brainmore.sequenceService.SequenceGenerator
 import com.ramcosta.composedestinations.annotation.Destination
-import kotlinx.coroutines.delay
-
 
 
 @Destination
 @Composable
 fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
-
 
 
     var enabled by remember {
@@ -40,29 +42,42 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
     var isinCorrect by remember {
         mutableStateOf(false)
     }
-    var currentcolor by remember{
+
+    var sequencelenght by remember {
         mutableStateOf(0)
+    }
+    var checkcolor by remember {
+        mutableStateOf(0 )
     }
 
 
 
-
-    var sequencelenght = sequenceGenerator.getsequenceLenght()
-    var sequence: ArrayList<Color> = ArrayList(sequencelenght)
+    val sequence: ArrayList<String> = ArrayList()
+    sequenceGenerator.getcolor(sequence)
+   
 
     LaunchedEffect(key1 = isnext, key2 = isinCorrect) {
         while (isgamestart == 1) {
             if (isnext) {
-                delay(1000L)
-                sequencelenght+= sequenceGenerator.sequenceincrement(1)
-                sequenceGenerator.getcolor(sequencelenght,sequence)
+                sequencelenght++
+                sequenceGenerator.getcolor(sequence)
 
+                for ( i in 0..sequencelenght) {
+
+                    if (i >= sequencelenght) {
+                        isnext = false
+                    }
+                }
             } else if (isinCorrect) {
                 isgamestart = 0
-                sequenceGenerator.resetSequence()
+                sequencelenght = 0
+                sequenceGenerator.resetSequence(sequence)
             }
         }
     }
+
+
+
 
     Box(
         contentAlignment = Alignment.Center,
@@ -103,9 +118,7 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
                     onClick = {
                         enabled = !enabled
                         isgamestart++
-                        currentcolor++
-
-                        sequenceGenerator.getcolor(currentcolor,sequence)
+                        isnext=!isnext
 
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
@@ -119,10 +132,11 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
                     )
                 }
             } else {
+
                 Box(
                     modifier = Modifier
                         .size(160.dp)
-                        .background(sequence[currentcolor])
+                        .background(color.value)
                         .clip(
                             RoundedCornerShape(
                                 topStart = 30.dp,
@@ -134,6 +148,7 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
                 )
 
             }
+
             Spacer(modifier = Modifier.height(400.dp))
         }
 
@@ -159,8 +174,12 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
                 {
                     Button(
                         onClick = {
-                            if (sequence[currentcolor] == Color.Green) {
-                                isnext = !isnext
+                            if (sequence[checkcolor] == "green") {
+                                if(checkcolor==sequencelenght) {
+                                    isnext = !isnext
+                                    checkcolor=0
+                                }
+                                else checkcolor++
                             } else {
                                 isinCorrect = !isinCorrect
                             }
@@ -172,8 +191,13 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
 
                     Button(
                         onClick = {
-                            if (sequence[currentcolor] == Color.Yellow) {
-                                isnext = !isnext
+                            if (sequence[checkcolor] == "yellow") {
+                                if(checkcolor==sequencelenght) {
+                                    isnext = !isnext
+                                    checkcolor=0
+                                }
+                                else checkcolor++
+
                             } else {
                                 isinCorrect = !isinCorrect
                             }
@@ -194,8 +218,12 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
 
                     Button(
                         onClick = {
-                            if (sequence[currentcolor] == Color.Red) {
-                                isnext = !isnext
+                            if (sequence[checkcolor] == "red") {
+                                if(checkcolor==sequencelenght) {
+                                    isnext = !isnext
+                                    checkcolor=0
+                                }
+                                else checkcolor++
                             } else {
                                 isinCorrect = !isinCorrect
                             }
@@ -207,8 +235,12 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
 
                     Button(
                         onClick = {
-                            if (sequence[currentcolor] == Color.Red) {
-                                isnext = !isnext
+                            if (sequence[checkcolor] == "blue") {
+                                if(checkcolor==sequencelenght) {
+                                    isnext = !isnext
+                                    checkcolor=0
+                                }
+                                else checkcolor++
                             } else {
                                 isinCorrect = !isinCorrect
                             }
@@ -224,6 +256,7 @@ fun FirstgameScreen(sequenceGenerator: SequenceGenerator) {
         }
     }
 }
+
 
 
 
